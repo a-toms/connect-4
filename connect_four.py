@@ -13,12 +13,16 @@ class Game:
         print("Welcome to Connect 4!")
         self.get_players_names()
         print("Let's play Connect 4!")
-        self.wait(1)
+        self.wait(2)
         winning_player = self.run_loop_until_game_ends_and_get_winner()
         if winning_player != None:
-            self.show_winner_message()
+            winning_player.show_winner_message()
         else:
             self.show_draw_message()
+
+    @staticmethod
+    def show_draw_message(self):
+        print("The game ends. It was a draw!")
 
     def get_players_names(self) -> None:
         name_1 = input("Please enter player 1's name:\t")
@@ -34,7 +38,7 @@ class Game:
     def wait(self, seconds):
         while seconds > 0:
             print(seconds)
-            time.sleep(1)
+            time.sleep(2)
             seconds -= 1
 
     def run_loop_until_game_ends_and_get_winner(self):
@@ -92,9 +96,7 @@ class Player:
     def show_winner_message(self):
         print(f"Congratulations! {self.name.title()} won the game!")
 
-    @staticmethod
-    def show_draw_message(self):
-        print("The game ends. It was a draw!")
+
 
 class Board:
     def __init__(self):
