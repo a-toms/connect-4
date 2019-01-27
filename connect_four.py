@@ -18,7 +18,7 @@ class Game:
         if winning_player != None:
             self.show_winner_message()
         else:
-            show_draw_message()
+            self.show_draw_message()
 
     def get_players_names(self) -> None:
         # name_1 = input("Please enter player 1's name:\t")
