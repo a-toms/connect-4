@@ -32,6 +32,7 @@ class GameChecker:
     def is_vertical_win(self):
         # Check each column for 4 identical consecutive elements
         for k in self.board.cols.keys():
+            print(self.board.cols[k])
             if self.has_four_consecutive(self.board.cols[k]):
                 return True
         else:
@@ -53,7 +54,7 @@ class GameChecker:
         # There are four possible combinations of 4 in a set of 7 elements
         for i in range(4):
             consecutive = some_list[i:i+4]
-            if len(set(consecutive)) == 1:
+            if len(consecutive) == 4 and len(set(consecutive)) == 1:
                 return True
         return False
 
