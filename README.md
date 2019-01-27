@@ -1,5 +1,5 @@
 # Connect4
-A Connect 4 game that I wrote this afternoon in Python.
+A connect 4 game that I wrote this afternoon in python.
 
 Simply run from the terminal:
 
