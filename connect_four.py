@@ -15,13 +15,13 @@ class Play:
 class Board:
     def __init__(self):
         self.cols = {
+            0: [],
             1: [],
             2: [],
             3: [],
             4: [],
             5: [],
-            6: [],
-            7: []
+            6: []
         }
 
 
@@ -30,7 +30,7 @@ class GameChecker:
         self.board = board
 
     def is_vertical_win(self) -> bool:
-        # Check each column for 4 identical consecutive elements
+        # Check each column for 4 identical consecutive elements.
         for k in self.board.cols.keys():
             if self.has_four_consecutive(self.board.cols[k]):
                 return True
@@ -38,7 +38,7 @@ class GameChecker:
             return False
 
     def is_horizontal_win(self) -> bool:
-        # Build each row. Check each row for 4 identical consecutive elements
+        # Build each row. Check each row for 4 identical consecutive elements.
         for i in range(6):  # The column height is 6
             row = []
 
@@ -53,10 +53,20 @@ class GameChecker:
             return False
 
 
+    def is_positive_diagonal_win(self) -> bool:
+        #  build all positive diagonals
+        starting_indices = ((0, 2), (0, 1), (0, 0), (1, 0), (2, 0), (3, 0))
+        for x, y in starting_indices:
+            # Build diagonal
+            diagonal = []
+            for i in range(6):  # The maximum diagonal length is 6
+                try:
 
-
-    def is_pos_diagonal_win(self):
-        pass
+                    print(self.board.cols[0])
+                    diagonal.append(self.board.cols[x + i][y + i])
+                except IndexError:
+                    diagonal.append(None)
+            print(diagonal)
 
     def is_neg_diagonal_win(self):
         pass
