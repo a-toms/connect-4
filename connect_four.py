@@ -24,11 +24,32 @@ class Board:
             6: []
         }
 
+    def show(self):
+        left_divider = "| "
+        right_divider = " |"
+        space = " "
+        board_title = "--~--   Connect Four    --~--"
+        board_line = "-----------------------------"
+        row_numbers = "| 1 | 2 | 3 | 4 | 5 | 6 | 7 |"
+        print(board_title + "\n")
+        for i in range(6, 0, -1):  # The column height is 6. Countdown from 6.
+            row = "|"
+            for k in self.cols.keys():
+                try:
+                    row += space + self.cols[k][i] + right_divider
+                except IndexError:
+                    row += space + space + right_divider
+            print(row)
+        print(board_line)
+        print(row_numbers)
+
+
+
+
 
 class GameChecker:
     def __init__(self, board):
         self.board = board
-
 
     def is_there_a_winner(self):
         for win_check in (
@@ -54,7 +75,6 @@ class GameChecker:
         # Build each row. Check each row for 4 identical consecutive elements.
         for i in range(6):  # The column height is 6
             row = []
-
             for k in self.board.cols.keys():
                 try:
                     row.append(self.board.cols[k][i])
@@ -75,6 +95,7 @@ class GameChecker:
                     diagonal.append(self.board.cols[x + i][y + i])
                 except (IndexError, KeyError):  # Excepts when the diagonal exceeds the board's dimensions.
                     diagonal.append(None)
+            print(diagonal)
             if self.has_four_consecutive(diagonal):
                 return True
         else:
@@ -96,17 +117,19 @@ class GameChecker:
             return False
 
     def is_draw(self) -> bool:
+        # Checks if there is a draw based on any win and if the board is full.
         if self.is_there_a_winner() is False:
-            print(sum(len(v) for v in self.board.cols.values()))
             return sum(len(v) for v in self.board.cols.values()) == 42
-
+        else:
+            return False
 
     def has_four_consecutive(self, some_list: List) -> bool:
         # There are four possible combinations of 4 in a set of 7 elements
         for i in range(4):
             consecutive = some_list[i:i+4]
             if len(consecutive) == 4 and len(set(consecutive)) == 1:
-                return True
+                if None not in consecutive:
+                    return True
         return False
 
 

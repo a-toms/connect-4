@@ -116,12 +116,11 @@ class TestDraw(unittest.TestCase):
         )
 
     def test_is_draw_false(self):
-        self.checker = GameChecker(self.examples.board7_draw)
+        self.checker = GameChecker(self.examples.board2_vert_win)
         self.assertEqual(
             False,
             self.checker.is_draw()
         )
-
 
 
 class TestPositiveDiagonalWinChecks(unittest.TestCase):
