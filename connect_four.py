@@ -9,12 +9,33 @@ class Play:
 
 
 
-class GameStatusChecker:
+
+
+
+class Board:
+    def __init__(self):
+        self.cols = {
+            1 : [],
+            2 : [],
+            3 : [],
+            4 : [],
+            5 : [],
+            6 : [],
+            7 : []
+        }
+
+
+class GameChecker(Board):
     def __init__(self):
         pass
 
     def is_vertical_win(self):
-        pass
+        # Check each column for 4 identical consecutive elements
+        for k in self.cols.keys():
+            if self.has_four_consecutive(self.cols[k]):
+                return True
+        else:
+            return False
 
     def is_horizontal_win(self):
         pass
@@ -29,29 +50,13 @@ class GameStatusChecker:
         pass
 
     def has_four_consecutive(self, some_list: List) -> bool:
-        # There are three possible combinations of 4 in a set of 6 elements
-        for i in range(3):
+        # There are four possible combinations of 4 in a set of 7 elements
+        for i in range(4):
             consecutive = some_list[i:i+4]
-            print(consecutive)
-            print(set(consecutive))
             if len(set(consecutive)) == 1:
-
                 return True
         return False
 
-
-
-
-
-class Board:
-    def __init__(self):
-        self.column_1 = []
-        self.column_2 = []
-        self.column_3 = []
-        self.column_4 = []
-        self.column_5 = []
-        self.column_6 = []
-        self.column_7 = []
 
 
 class Player:

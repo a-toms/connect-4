@@ -1,24 +1,30 @@
 import unittest
-from connect_four import GameStatusChecker, Board
+from connect_four import GameChecker, Board
 
 
 class Examples:
     def __init__(self):
         self.vert_win_board = Board()
         self.vert_win_board.column_1 = [
-            "0", "0", "X", "X", "X", "X"
+            "O", "O", "X", "X", "X", "X"
         ]
         self.vert_win_board.column_2 = [
-            "0", "0", "X", "O", "X", "X"
+            "O", "O", "X", "O", "X", "X"
+        ]
+        self.vert_win_board.row_1 = [
+            "O", "O", "O", "O", "X", "X", "X"
+        ]
+        self.vert_win_board.row_2 = [
+            "O", "O", "X", "O", "X", "X", "X"
         ]
 
 
 class TestGameStatusChecker(unittest.TestCase):
     def setUp(self):
-        self.checker = GameStatusChecker()
+        self.checker = GameChecker()
         self.examples = Examples()
 
-    def test_contains_four_consecutive_true(self):
+    def test_contains_four_consecutive_true_column(self):
         self.assertEqual(
             True,
             self.checker.has_four_consecutive(
@@ -26,11 +32,26 @@ class TestGameStatusChecker(unittest.TestCase):
             )
         )
 
-    def test_contains_four_consecutive_false(self):
+    def test_contains_four_consecutive_false_column(self):
         self.assertEqual(
             False,
             self.checker.has_four_consecutive(
                 self.examples.vert_win_board.column_2
+            )
+        )
+
+    def test_contains_four_consecutive_true_row(self):
+        self.assertEqual(
+            True,
+            self.checker.has_four_consecutive(
+                self.examples.vert_win_board.row_1
+            )
+        )
+    def test_contains_four_consecutive_false_row(self):
+        self.assertEqual(
+            False,
+            self.checker.has_four_consecutive(
+                self.examples.vert_win_board.row_2
             )
         )
 
