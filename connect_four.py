@@ -29,17 +29,31 @@ class GameChecker:
     def __init__(self, board):
         self.board = board
 
-    def is_vertical_win(self):
+    def is_vertical_win(self) -> bool:
         # Check each column for 4 identical consecutive elements
         for k in self.board.cols.keys():
-            print(self.board.cols[k])
             if self.has_four_consecutive(self.board.cols[k]):
                 return True
         else:
             return False
 
-    def is_horizontal_win(self):
-        pass
+    def is_horizontal_win(self) -> bool:
+        # Build each row. Check each row for 4 identical consecutive elements
+        for i in range(6):  # The column height is 6
+            row = []
+
+            for k in self.board.cols.keys():
+                try:
+                    row.append(self.board.cols[k][i])
+                except IndexError:
+                    row.append(None)
+            if self.has_four_consecutive(row):
+                return True
+        else:
+            return False
+
+
+
 
     def is_pos_diagonal_win(self):
         pass

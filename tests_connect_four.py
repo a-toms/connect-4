@@ -40,8 +40,19 @@ class Examples:
             7: ["O", "O", "X", "O", "X", "X", "X"]
         }
 
+        self.board4_horizontal_win = Board()
+        self.board4_horizontal_win.cols = {
+            1: ["O", "O", "X", "O", "X", "X", "X"],
+            2: ["X", "O", "O", "O", "X", "X", "O"],
+            3: ["O", "O"],
+            4: ["O", "X", "O"],
+            5: ["O", "O", "O", "X", "X"],
+            6: ["X", "O", "O"],
+            7: ["O", "O", "O", "O", "X", "X", "X"]
+        }
 
-class TestWinChecks(unittest.TestCase):
+
+class TestVerticalWinChecks(unittest.TestCase):
     def setUp(self):
         self.examples = Examples()
 
@@ -57,6 +68,25 @@ class TestWinChecks(unittest.TestCase):
         self.assertEqual(
             False,
             self.checker.is_vertical_win()
+        )
+
+
+class TestHorizontalWinChecks(unittest.TestCase):
+    def setUp(self):
+        self.examples = Examples()
+
+    def test_is_horizontal_win_true(self):
+        self.checker = GameChecker(self.examples.board4_horizontal_win)
+        self.assertEqual(
+            True,
+            self.checker.is_horizontal_win()
+        )
+
+    def test_is_horizontal_win_false(self):
+        self.checker = GameChecker(self.examples.board3_no_win)
+        self.assertEqual(
+            False,
+            self.checker.is_horizontal_win()
         )
 
 class TestContainsFourConsecutive(unittest.TestCase):
@@ -94,7 +124,6 @@ class TestContainsFourConsecutive(unittest.TestCase):
                 self.examples.vert_win_board.row_2
             )
         )
-
 
     def test_is_vertical_win(self):
         pass
