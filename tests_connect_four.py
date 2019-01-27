@@ -20,58 +20,109 @@ class Examples:
 
         self.board2_vert_win = Board()
         self.board2_vert_win.cols = {
-            0: ["O", "O", "X", "O", "X", "X", "X"],
-            1: ["X", "O", "X", "X", "X", "X", "O"],  # Vertical win column
+            0: ["O", "O", "X", "O", "X", "X"],
+            1: ["X", "O", "X", "X", "X", "X"],  # Vertical win column
             2: ["O", "O", "X"],
             3: ["X"],
-            4: ["O", "O", "X", "O", "X", "X", "X"],
+            4: ["O", "O", "X", "O", "X", "X"],
             5: ["O", "O", "X", "O"],
-            6: ["O", "O", "X", "O", "X", "X", "X"]
+            6: ["O", "O", "X", "O", "X", "X"]
         }
 
         self.board3_no_win = Board()
         self.board3_no_win.cols = {
-            0: ["O", "O", "X", "O", "X", "X", "X"],
-            1: ["X", "O", "X", "O", "X", "X", "O"],
+            0: ["O", "O", "X", "O", "X", "X"],
+            1: ["X", "O", "X", "O", "X", "X"],
             2: ["O", "O", "X"],
             3: ["X"],
-            4: ["O", "O", "X", "O", "X", "X", "X"],
+            4: ["O", "O", "X", "O", "X", "X"],
             5: ["O", "O", "X", "O"],
-            6: ["O", "O", "X", "O", "X", "X", "X"]
+            6: ["O", "O", "X", "O", "X", "X"]
         }
 
         self.board4_horizontal_win = Board()
         self.board4_horizontal_win.cols = {
-            0: ["O", "O", "X", "O", "X", "X", "X"],
-            1: ["X", "O", "O", "O", "X", "X", "O"],
+            0: ["O", "O", "X", "O", "X", "X"],
+            1: ["X", "O", "O", "O", "X", "X"],
             2: ["O", "O"],
             3: ["O", "X", "O"],
             4: ["O", "O", "O", "X", "X"],
             5: ["X", "O", "O"],
-            6: ["O", "O", "O", "O", "X", "X", "X"]
+            6: ["O", "O", "O", "O", "X", "X"]
         }
 
         self.board5_positive_diagonal_win = Board()
         self.board5_positive_diagonal_win.cols = {
-            0: ["O", "O", "X", "O", "X", "X", "X"],
-            1: ["X", "O", "O", "O", "X", "X", "O"],
+            0: ["O", "O", "X", "O", "X", "X"],
+            1: ["X", "O", "O", "O", "X", "X"],
             2: ["O", "O", "O"],
             3: ["O", "X", "O"],  # Winning chain at [0]
             4: ["O", "O", "O", "X", "X"], # Winning chain at [1]
             5: ["X", "X", "O"], # Winning chain at [2]
-            6: ["O", "O", "X", "O", "X", "X", "X"] # Winning chain at [3]
+            6: ["O", "O", "X", "O", "X", "X"] # Winning chain at [3]
         }
 
         self.board6_negative_diagonal_win = Board()
         self.board6_negative_diagonal_win.cols = {
-            0: ["O", "O", "X", "O", "X", "X", "X"],
-            1: ["X", "O", "O", "O", "X", "X", "O"],
+            0: ["O", "O", "X", "O", "X", "X"],
+            1: ["X", "O", "O", "O", "X", "X"],
             2: ["O", "O", "O"],
             3: ["O", "X", "O"],  # Winning chain at [0]
             4: ["O", "O", "O", "X", "X"],  # Winning chain at [1]
             5: ["X", "X", "O"],  # Winning chain at [2]
-            6: ["O", "O", "X", "O", "X", "X", "X"]  # Winning chain at [3]
+            6: ["O", "O", "X", "O", "X", "X"]  # Winning chain at [3]
         }
+
+        self.board7_draw = Board()
+        self.board7_draw.cols = {
+            0: ["O", "O", "X", "O", "X", "X"],
+            1: ["X", "O", "O", "O", "X", "X"],
+            2: ["O", "O", "O", "X", "X", "O"],
+            3: ["O", "X", "X", "X", "O", "X"],
+            4: ["O", "O", "O", "X", "O", "X"],
+            5: ["O", "O", "X", "O", "X", "X"],
+            6: ["O", "O", "X", "O", "X", "X"]
+        }
+
+
+class TestIsThereAWinner(unittest.TestCase):
+    def setUp(self):
+        self.examples = Examples()
+
+    def test_is_there_a_winner_true(self):
+        self.checker = GameChecker(self.examples.board2_vert_win)
+        self.assertEqual(
+            True,
+            self.checker.is_there_a_winner()
+        )
+
+    def test_is_there_a_winner_false(self):
+        self.checker = GameChecker(self.examples.board7_draw)
+        self.assertEqual(
+            False,
+            self.checker.is_there_a_winner()
+        )
+
+
+class TestDraw(unittest.TestCase):
+    def setUp(self):
+        self.examples = Examples()
+
+    def test_is_draw_true(self):
+        self.checker = GameChecker(self.examples.board7_draw)
+        self.assertEqual(
+            True,
+            self.checker.is_draw()
+        )
+
+    def test_is_draw_false(self):
+        self.checker = GameChecker(self.examples.board7_draw)
+        self.assertEqual(
+            False,
+            self.checker.is_draw()
+        )
+
+
 
 class TestPositiveDiagonalWinChecks(unittest.TestCase):
     def setUp(self):

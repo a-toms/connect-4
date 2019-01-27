@@ -29,6 +29,19 @@ class GameChecker:
     def __init__(self, board):
         self.board = board
 
+
+    def is_there_a_winner(self):
+        for win_check in (
+                self.is_vertical_win(),
+                self.is_horizontal_win(),
+                self.is_negative_diagonal_win(),
+                self.is_positive_diagonal_win()
+        ):
+            if win_check:
+                return True
+            else:
+                return False
+
     def is_vertical_win(self) -> bool:
         # Check each column for 4 identical consecutive elements.
         for k in self.board.cols.keys():
@@ -54,7 +67,6 @@ class GameChecker:
 
     def is_positive_diagonal_win(self) -> bool:
         starting_indices = ((0, 2), (0, 1), (0, 0), (1, 0), (2, 0), (3, 0))
-        #  Build all positive diagonals
         for x, y in starting_indices:
             # Build diagonal
             diagonal = []
@@ -68,11 +80,26 @@ class GameChecker:
         else:
             return False
 
-    def is_neg_diagonal_win(self):
-        pass
+    def is_negative_diagonal_win(self) -> bool:
+        starting_indices = ((0, 3), (0, 4), (0, 5), (1, 5), (2, 5), (3, 5))
+        for x, y in starting_indices:
+            # Build diagonal
+            diagonal = []
+            for i in range(6):  # The maximum diagonal length is 6 for the board.
+                try:
+                    diagonal.append(self.board.cols[x + i][y - i])
+                except (IndexError, KeyError):  # Excepts when the diagonal exceeds the board's dimensions.
+                    diagonal.append(None)
+            if self.has_four_consecutive(diagonal):
+                return True
+        else:
+            return False
 
-    def is_draw(self):
-        pass
+    def is_draw(self) -> bool:
+        if self.is_there_a_winner() is False:
+            print(sum(len(v) for v in self.board.cols.values()))
+            return sum(len(v) for v in self.board.cols.values()) == 42
+
 
     def has_four_consecutive(self, some_list: List) -> bool:
         # There are four possible combinations of 4 in a set of 7 elements
