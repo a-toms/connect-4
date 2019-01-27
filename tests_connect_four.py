@@ -17,12 +17,37 @@ class Examples:
         self.vert_win_board.row_2 = [
             "O", "O", "X", "O", "X", "X", "X"
         ]
+        self.board2_vert_win = Board()
+        self.board2_vert_win.cols = {
+            1: ["O", "O", "X", "O", "X", "X", "X"],
+            2: ["X", "O", "X", "X", "X", "X", "O"],  # Vertical win column
+            3: ["O", "O", "X"],
+            4: ["X"],
+            5: ["O", "O", "X", "O", "X", "X", "X"],
+            6: ["O", "O", "X", "O"],
+            7: ["O", "O", "X", "O", "X", "X", "X"]
+        }
 
 
-class TestGameStatusChecker(unittest.TestCase):
+class TestWinChecks(unittest.TestCase):
     def setUp(self):
-        self.checker = GameChecker()
         self.examples = Examples()
+        self.checker = GameChecker(self.examples.board2_vert_win)
+
+
+    def test_is_vertical_win(self):
+        self.assertEqual(
+            True,
+            self.checker.is_vertical_win()
+        )
+
+
+
+
+class TestContainsFourConsecutive(unittest.TestCase):
+    def setUp(self):
+        self.examples = Examples()
+        self.checker = GameChecker(self.examples.vert_win_board)
 
     def test_contains_four_consecutive_true_column(self):
         self.assertEqual(

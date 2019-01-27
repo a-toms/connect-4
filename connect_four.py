@@ -15,24 +15,24 @@ class Play:
 class Board:
     def __init__(self):
         self.cols = {
-            1 : [],
-            2 : [],
-            3 : [],
-            4 : [],
-            5 : [],
-            6 : [],
-            7 : []
+            1: [],
+            2: [],
+            3: [],
+            4: [],
+            5: [],
+            6: [],
+            7: []
         }
 
 
-class GameChecker(Board):
-    def __init__(self):
-        pass
+class GameChecker:
+    def __init__(self, board):
+        self.board = board
 
     def is_vertical_win(self):
         # Check each column for 4 identical consecutive elements
-        for k in self.cols.keys():
-            if self.has_four_consecutive(self.cols[k]):
+        for k in self.board.cols.keys():
+            if self.has_four_consecutive(self.board.cols[k]):
                 return True
         else:
             return False
@@ -40,7 +40,7 @@ class GameChecker(Board):
     def is_horizontal_win(self):
         pass
 
-    def is_pos_wiagonal_win(self):
+    def is_pos_diagonal_win(self):
         pass
 
     def is_neg_diagonal_win(self):
