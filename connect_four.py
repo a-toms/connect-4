@@ -1,14 +1,49 @@
 from typing import Dict, Tuple, Sequence, List
 
 
-class Play:
+class Game:
     def __init__(self):
         self.board = Board()
+        self.players = []
+
+    def play(self):
+        print("Welcome to Connect 4!")
+        name_1 = input("Please enter player 1's name:\t")
+        self.add_player(name_1, "X")
+        print("Thanks {name_1}.")
+        name_2 = input("Please enter player 2's name:\t")
+        self.add_player(name_2, "O")
+        print("Thanks {name_2}.")
+
+
+    def add_player(self, player_name, player_token):
+        self.players.append(Player(player_name, player_token))
+
+    def move(self, active_player):
+        column = input(
+            f"{active_player.name.title()}, "
+            f"please enter the column to place your piece."
+        )
+        if column not in (self.board.cols.keys()):
+            "That column was not found. I will ask again."
+            return self.move(active_player)
+        if len(self.board.cols[column]) == 6:
+            "That column is full. I will ask again"
+            return self.move(active_player)
 
 
 
 
 
+
+
+class Player:
+    def __init__(self, name, token):
+        self.name = name
+        self.token = token
+
+    def place_token(self, board, column):
+        board.cols[column].append(self.token)
 
 
 
@@ -24,8 +59,9 @@ class Board:
             6: []
         }
 
+
+
     def show(self):
-        left_divider = "| "
         right_divider = " |"
         space = " "
         board_title = "--~--   Connect Four    --~--"
@@ -42,9 +78,6 @@ class Board:
             print(row)
         print(board_line)
         print(row_numbers)
-
-
-
 
 
 class GameChecker:
@@ -131,14 +164,6 @@ class GameChecker:
                 if None not in consecutive:
                     return True
         return False
-
-
-
-class Player:
-    def __init__(self, name, token):
-        self.name = name
-        self.token = token
-
 
 
 
