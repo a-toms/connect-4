@@ -75,13 +75,13 @@ class Examples:
 
         self.board7_draw = Board()
         self.board7_draw.cols = {
-            0: ["O", "O", "X", "O", "X", "X"],
-            1: ["X", "O", "O", "O", "X", "X"],
+            0: ["O", "O", "X", "O", "X", "O"],
+            1: ["X", "O", "X", "O", "X", "X"],
             2: ["O", "O", "O", "X", "X", "O"],
             3: ["O", "X", "X", "X", "O", "X"],
-            4: ["O", "O", "O", "X", "O", "X"],
+            4: ["X", "O", "O", "X", "O", "X"],
             5: ["O", "O", "X", "O", "X", "X"],
-            6: ["O", "O", "X", "O", "X", "X"]
+            6: ["O", "O", "X", "O", "X", "O"]
         }
 
 
@@ -101,29 +101,30 @@ class TestPlaceToken(unittest.TestCase):
             self.game.board.cols[0]
         )
 
+
 class TestIsGameComplete(unittest.TestCase):
     def setUp(self):
         self.examples = Examples()
 
-    def is_game_complete_true_win(self):
+    def test_is_game_complete_true_win(self):
         self.checker = GameChecker(self.examples.board2_vert_win)
         self.assertEqual(
             True,
-            self.is_game_complete_true()
+            self.checker.is_game_complete()
         )
 
-    def is_game_complete_true_draw(self):
+    def test_is_game_complete_true_draw(self):
         self.checker = GameChecker(self.examples.board7_draw)
         self.assertEqual(
             True,
-            self.is_game_complete_true()
+            self.checker.is_game_complete()
         )
 
-    def is_game_complete_false(self):
+    def test_is_game_complete_false(self):
         self.checker = GameChecker(self.examples.board3_no_win_or_draw)
         self.assertEqual(
             False,
-            self.is_game_complete_true()
+            self.checker.is_game_complete()
         )
 
 

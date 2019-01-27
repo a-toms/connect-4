@@ -13,15 +13,17 @@ class Game:
         print("Welcome to Connect 4!")
         self.get_players_names()
         print("Let's play Connect 4!")
-        self.wait(3)
+        self.wait(1)
         winning_player = self.run_loop_until_game_ends_and_get_winner()
         winning_player.show_winner_message()
 
     def get_players_names(self) -> None:
-        name_1 = input("Please enter player 1's name:\t")
+        # name_1 = input("Please enter player 1's name:\t")
+        name_1 = "Alph"
         self.add_player(name_1, "X")
         print(f"Thanks {name_1.title()}.")
-        name_2 = input("Please enter player 2's name:\t")
+        # name_2 = input("Please enter player 2's name:\t")
+        name_2 = "Beta"
         self.add_player(name_2, "O")
         print(f"Thanks {name_2.title()}.")
 
@@ -41,29 +43,37 @@ class Game:
                 self.board.clear_screen()
                 self.board.show()
                 self.move(active_player)
+                print(self.game_checker.is_vertical_win())
+                print(self.game_checker.is_horizontal_win())
+                print(self.game_checker.is_negative_diagonal_win())
+                print(self.game_checker.is_positive_diagonal_win())
+                print(self.game_checker.is_game_complete())
                 if self.game_checker.is_game_complete():
+                    self.board.clear_screen()
+                    self.board.show()
                     return active_player
+
+
 
     def move(self, active_player) -> None:
         col = self.get_column(active_player)
         self.place_token(col, active_player)
 
     def place_token(self, column, player) -> None:
-        print(self.board.cols[column])
         self.board.cols[column].append(player.token)
 
-    def get_column(self, active_player) -> int:
-        column = int(input(
+    def get_column(self, active_player) -> int:  # Todo: fix the user input sanitization here
+        column = -1 + int(input(  # This -1 is to allow the player to follow a non-0th system
             f"{active_player.name.title()}, "
             f"please enter the column to place your piece.\t"
         ))
         if column not in (self.board.cols.keys()):
-            "That column was not found. I will ask again."
-            return self.move(active_player)
+            print("That column was not found. I will ask again.")
+            self.move(active_player)
         if len(self.board.cols[column]) == 6:
-            "That column is full. I will ask again"
-            return self.move(active_player)
-        return column + 1
+            print("That column is full. I will ask again")
+            self.move(active_player)
+        return column
 
 
 class Player:
@@ -113,19 +123,19 @@ class GameChecker:
         self.board = board
 
     def is_game_complete(self):
-        return self.is_there_a_winner() and self.is_there_a_draw()
+        return self.is_there_a_winner() or self.is_there_a_draw()
 
     def is_there_a_winner(self):
-        for win_check in (
-                self.is_vertical_win(),
-                self.is_horizontal_win(),
-                self.is_negative_diagonal_win(),
-                self.is_positive_diagonal_win()
-        ):
-            if win_check:
-                return True
-            else:
-                return False
+        if self.is_vertical_win():
+            return True
+        if self.is_horizontal_win():
+            return True
+        if self.is_negative_diagonal_win():
+            return True
+        if self.is_positive_diagonal_win():
+            return True
+        else:
+            return False
 
     def is_vertical_win(self) -> bool:
         # Check each column for 4 identical consecutive elements.
