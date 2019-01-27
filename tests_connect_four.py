@@ -62,6 +62,17 @@ class Examples:
             6: ["O", "O", "X", "O", "X", "X", "X"] # Winning chain at [3]
         }
 
+        self.board6_negative_diagonal_win = Board()
+        self.board6_negative_diagonal_win.cols = {
+            0: ["O", "O", "X", "O", "X", "X", "X"],
+            1: ["X", "O", "O", "O", "X", "X", "O"],
+            2: ["O", "O", "O"],
+            3: ["O", "X", "O"],  # Winning chain at [0]
+            4: ["O", "O", "O", "X", "X"],  # Winning chain at [1]
+            5: ["X", "X", "O"],  # Winning chain at [2]
+            6: ["O", "O", "X", "O", "X", "X", "X"]  # Winning chain at [3]
+        }
+
 class TestPositiveDiagonalWinChecks(unittest.TestCase):
     def setUp(self):
         self.examples = Examples()
@@ -78,6 +89,25 @@ class TestPositiveDiagonalWinChecks(unittest.TestCase):
         self.assertEqual(
             False,
             self.checker.is_positive_diagonal_win()
+        )
+
+
+class TestNegativeDiagonalWinChecks(unittest.TestCase):
+    def setUp(self):
+        self.examples = Examples()
+
+    def test_is_positive_diagonal_win_true(self):
+        self.checker = GameChecker(self.examples.board6_negative_diagonal_win)
+        self.assertEqual(
+            True,
+            self.checker.is_negative_diagonal_win()
+        )
+
+    def test_is_negative_diagonal_win_false(self):
+        self.checker = GameChecker(self.examples.board3_no_win)
+        self.assertEqual(
+            False,
+            self.checker.is_negative_diagonal_win()
         )
 
 

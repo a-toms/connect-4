@@ -52,21 +52,21 @@ class GameChecker:
         else:
             return False
 
-
     def is_positive_diagonal_win(self) -> bool:
-        #  build all positive diagonals
         starting_indices = ((0, 2), (0, 1), (0, 0), (1, 0), (2, 0), (3, 0))
+        #  Build all positive diagonals
         for x, y in starting_indices:
             # Build diagonal
             diagonal = []
-            for i in range(6):  # The maximum diagonal length is 6
+            for i in range(6):  # The maximum diagonal length is 6 for the board.
                 try:
-
-                    print(self.board.cols[0])
                     diagonal.append(self.board.cols[x + i][y + i])
-                except IndexError:
+                except (IndexError, KeyError):  # Excepts when the diagonal exceeds the board's dimensions.
                     diagonal.append(None)
-            print(diagonal)
+            if self.has_four_consecutive(diagonal):
+                return True
+        else:
+            return False
 
     def is_neg_diagonal_win(self):
         pass
