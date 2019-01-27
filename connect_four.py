@@ -15,7 +15,10 @@ class Game:
         print("Let's play Connect 4!")
         self.wait(1)
         winning_player = self.run_loop_until_game_ends_and_get_winner()
-        winning_player.show_winner_message()
+        if winning_player != None:
+            self.show_winner_message()
+        else:
+            show_draw_message()
 
     def get_players_names(self) -> None:
         # name_1 = input("Please enter player 1's name:\t")
@@ -43,15 +46,14 @@ class Game:
                 self.board.clear_screen()
                 self.board.show()
                 self.move(active_player)
-                print(self.game_checker.is_vertical_win())
-                print(self.game_checker.is_horizontal_win())
-                print(self.game_checker.is_negative_diagonal_win())
-                print(self.game_checker.is_positive_diagonal_win())
-                print(self.game_checker.is_game_complete())
-                if self.game_checker.is_game_complete():
+                if self.game_checker.is_there_a_winner():
                     self.board.clear_screen()
                     self.board.show()
                     return active_player
+                if self.game_checker.is_there_a_draw():
+                    self.board.clear_screen()
+                    self.board.show()
+
 
 
 
@@ -63,16 +65,24 @@ class Game:
         self.board.cols[column].append(player.token)
 
     def get_column(self, active_player) -> int:  # Todo: fix the user input sanitization here
-        column = -1 + int(input(  # This -1 is to allow the player to follow a non-0th system
+        column = input(  # This -1 is to allow the player to follow a non-0th system
             f"{active_player.name.title()}, "
             f"please enter the column to place your piece.\t"
-        ))
-        if column not in (self.board.cols.keys()):
-            print("That column was not found. I will ask again.")
-            self.move(active_player)
-        if len(self.board.cols[column]) == 6:
-            print("That column is full. I will ask again")
-            self.move(active_player)
+        )
+        while True:
+            try:
+                column = int(column) - 1
+            except ValueError:
+                print("That column was not found. I will ask again.")
+                return self.get_column(active_player)
+            if column not in (self.board.cols.keys()):
+                print("That column was not found. I will ask again.")
+                return self.get_column(active_player)
+            if len(self.board.cols[column]) == 6:
+                print("That column is full. I will ask again")
+                return self.get_column(active_player)
+            else:
+                break
         return column
 
 
@@ -83,6 +93,10 @@ class Player:
 
     def show_winner_message(self):
         print(f"Congratulations! {self.name.title()} won the game!")
+
+    @staticmethod
+    def show_draw_message(self):
+        print("The game ends. It was a draw!")
 
 class Board:
     def __init__(self):
