@@ -29,8 +29,8 @@ class Examples:
             6: ["O", "O", "X", "O", "X", "X"]
         }
 
-        self.board3_no_win = Board()
-        self.board3_no_win.cols = {
+        self.board3_no_win_or_draw = Board()
+        self.board3_no_win_or_draw.cols = {
             0: ["O", "O", "X", "O", "X", "X"],
             1: ["X", "O", "X", "O", "X", "X"],
             2: ["O", "O", "X"],
@@ -85,6 +85,32 @@ class Examples:
         }
 
 
+class TestIsGameComplete(unittest.TestCase):
+    def setUp(self):
+        self.examples = Examples()
+
+    def is_game_complete_true_win(self):
+        self.checker = GameChecker(self.examples.board2_vert_win)
+        self.assertEqual(
+            True,
+            self.is_game_complete_true()
+        )
+
+    def is_game_complete_true_draw(self):
+        self.checker = GameChecker(self.examples.board7_draw)
+        self.assertEqual(
+            True,
+            self.is_game_complete_true()
+        )
+
+    def is_game_complete_false(self):
+        self.checker = GameChecker(self.examples.board3_no_win_or_draw)
+        self.assertEqual(
+            False,
+            self.is_game_complete_true()
+        )
+
+
 class TestIsThereAWinner(unittest.TestCase):
     def setUp(self):
         self.examples = Examples()
@@ -112,14 +138,14 @@ class TestDraw(unittest.TestCase):
         self.checker = GameChecker(self.examples.board7_draw)
         self.assertEqual(
             True,
-            self.checker.is_draw()
+            self.checker.is_there_a_draw()
         )
 
     def test_is_draw_false(self):
         self.checker = GameChecker(self.examples.board2_vert_win)
         self.assertEqual(
             False,
-            self.checker.is_draw()
+            self.checker.is_there_a_draw()
         )
 
 
@@ -135,7 +161,7 @@ class TestPositiveDiagonalWinChecks(unittest.TestCase):
         )
 
     def test_is_positive_diagonal_win_false(self):
-        self.checker = GameChecker(self.examples.board3_no_win)
+        self.checker = GameChecker(self.examples.board3_no_win_or_draw)
         self.assertEqual(
             False,
             self.checker.is_positive_diagonal_win()
@@ -154,7 +180,7 @@ class TestNegativeDiagonalWinChecks(unittest.TestCase):
         )
 
     def test_is_negative_diagonal_win_false(self):
-        self.checker = GameChecker(self.examples.board3_no_win)
+        self.checker = GameChecker(self.examples.board3_no_win_or_draw)
         self.assertEqual(
             False,
             self.checker.is_negative_diagonal_win()
@@ -174,7 +200,7 @@ class TestVerticalWinChecks(unittest.TestCase):
         )
 
     def test_is_vertical_win_false(self):
-        self.checker = GameChecker(self.examples.board3_no_win)
+        self.checker = GameChecker(self.examples.board3_no_win_or_draw)
         self.assertEqual(
             False,
             self.checker.is_vertical_win()
@@ -193,7 +219,7 @@ class TestHorizontalWinChecks(unittest.TestCase):
         )
 
     def test_is_horizontal_win_false(self):
-        self.checker = GameChecker(self.examples.board3_no_win)
+        self.checker = GameChecker(self.examples.board3_no_win_or_draw)
         self.assertEqual(
             False,
             self.checker.is_horizontal_win()

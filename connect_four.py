@@ -1,13 +1,22 @@
-from typing import Dict, Tuple, Sequence, List
+from typing import Dict, Tuple, Sequence, List, NewType
+from itertools import cycle
 
 
 class Game:
     def __init__(self):
         self.board = Board()
+        self.game_checker = GameChecker(self.board)
         self.players = []
+
 
     def play(self):
         print("Welcome to Connect 4!")
+        self.get_players_names()
+        self.game_loop()
+
+
+
+    def get_players_names(self) -> None:
         name_1 = input("Please enter player 1's name:\t")
         self.add_player(name_1, "X")
         print("Thanks {name_1}.")
@@ -16,14 +25,28 @@ class Game:
         print("Thanks {name_2}.")
 
 
-    def add_player(self, player_name, player_token):
+    def add_player(self, player_name, player_token) -> None:
         self.players.append(Player(player_name, player_token))
 
-    def move(self, active_player):
-        column = input(
+    def game_loop(self):
+        while True:
+            for active_player in self.players:
+                self.move(active_player)
+                if self.game_checker.is_game_complete():
+                    return active_player
+
+    def move(self, active_player) -> None:
+        col = self.get_column(active_player)
+        self.place_token(col, active_player)
+
+    def place_token(self, column, player) -> None:
+        self.cols[column].append(self.player.token)
+
+    def get_column(self, active_player) -> int:
+        column = int(input(
             f"{active_player.name.title()}, "
             f"please enter the column to place your piece."
-        )
+        ))
         if column not in (self.board.cols.keys()):
             "That column was not found. I will ask again."
             return self.move(active_player)
@@ -32,19 +55,10 @@ class Game:
             return self.move(active_player)
 
 
-
-
-
-
-
 class Player:
     def __init__(self, name, token):
         self.name = name
         self.token = token
-
-    def place_token(self, board, column):
-        board.cols[column].append(self.token)
-
 
 
 class Board:
@@ -83,6 +97,9 @@ class Board:
 class GameChecker:
     def __init__(self, board):
         self.board = board
+
+    def is_game_complete(self):
+        return self.is_there_a_winner() and self.is_there_a_draw()
 
     def is_there_a_winner(self):
         for win_check in (
@@ -128,7 +145,6 @@ class GameChecker:
                     diagonal.append(self.board.cols[x + i][y + i])
                 except (IndexError, KeyError):  # Excepts when the diagonal exceeds the board's dimensions.
                     diagonal.append(None)
-            print(diagonal)
             if self.has_four_consecutive(diagonal):
                 return True
         else:
@@ -149,7 +165,7 @@ class GameChecker:
         else:
             return False
 
-    def is_draw(self) -> bool:
+    def is_there_a_draw(self) -> bool:
         # Checks if there is a draw based on any win and if the board is full.
         if self.is_there_a_winner() is False:
             return sum(len(v) for v in self.board.cols.values()) == 42
