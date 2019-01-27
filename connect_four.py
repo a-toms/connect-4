@@ -1,4 +1,4 @@
-from typing import Dict, Tuple, Sequence, List
+from typing import List
 import os
 import time
 
@@ -9,19 +9,19 @@ class Game:
         self.game_checker = GameChecker(self.board)
         self.players = []
 
-    def play(self):
+    def play(self) -> None:
         print("Welcome to Connect 4!")
         self.get_players_names()
         print("Let's play Connect 4!")
         self.wait(2)
         winning_player = self.run_loop_until_game_ends_and_get_winner()
-        if winning_player != None:
+        if winning_player is not None:
             winning_player.show_winner_message()
         else:
             self.show_draw_message()
 
     @staticmethod
-    def show_draw_message(self):
+    def show_draw_message() -> None:
         print("The game ends. It was a draw!")
 
     def get_players_names(self) -> None:
@@ -35,7 +35,8 @@ class Game:
     def add_player(self, player_name, player_token) -> None:
         self.players.append(Player(player_name, player_token))
 
-    def wait(self, seconds):
+    @staticmethod
+    def wait(seconds) -> None:
         while seconds > 0:
             print(seconds)
             time.sleep(2)
@@ -56,9 +57,6 @@ class Game:
                     self.board.clear_screen()
                     self.board.show()
 
-
-
-
     def move(self, active_player) -> None:
         col = self.get_column(active_player)
         self.place_token(col, active_player)
@@ -66,14 +64,14 @@ class Game:
     def place_token(self, column, player) -> None:
         self.board.cols[column].append(player.token)
 
-    def get_column(self, active_player) -> int:  # Todo: fix the user input sanitization here
-        column = input(  # This -1 is to allow the player to follow a non-0th system
+    def get_column(self, active_player) -> int:
+        column = input(
             f"{active_player.name.title()}, "
             f"please enter the column to place your piece.\t"
         )
         while True:
             try:
-                column = int(column) - 1
+                column = int(column) - 1  # This - 1 allows the player to follow a non-0th system
             except ValueError:
                 print("That column was not found. I will ask again.")
                 return self.get_column(active_player)
@@ -93,9 +91,8 @@ class Player:
         self.name = name
         self.token = token
 
-    def show_winner_message(self):
+    def show_winner_message(self) -> None:
         print(f"Congratulations! {self.name.title()} won the game!")
-
 
 
 class Board:
@@ -110,17 +107,18 @@ class Board:
             6: []
         }
 
-    def clear_screen(self) -> None:
+    @staticmethod
+    def clear_screen() -> None:
         os.system('cls' if os.name == 'nt' else 'clear')
 
     def show(self) -> None:
+        # Prints the formatted board.
         right_divider = " |"
         space = " "
         ten_spaces = space * 10
         board_title = "--~--   Connect Four    --~--"
         board_line = "-----------------------------"
         row_numbers = "| 1 | 2 | 3 | 4 | 5 | 6 | 7 |"
-
         print(ten_spaces + board_title + "\n")
         for i in range(6, -1, -1):  # The column height is 6. Countdown from 6.
             row = "|"
@@ -138,10 +136,10 @@ class GameChecker:
     def __init__(self, board):
         self.board = board
 
-    def is_game_complete(self):
+    def is_game_complete(self) -> bool:
         return self.is_there_a_winner() or self.is_there_a_draw()
 
-    def is_there_a_winner(self):
+    def is_there_a_winner(self) -> bool:
         if self.is_vertical_win():
             return True
         if self.is_horizontal_win():
@@ -212,7 +210,8 @@ class GameChecker:
         else:
             return False
 
-    def has_four_consecutive(self, some_list: List) -> bool:
+    @staticmethod
+    def has_four_consecutive(some_list: List) -> bool:
         # There are four possible combinations of 4 in a set of 7 elements
         for i in range(4):
             consecutive = some_list[i:i+4]
@@ -224,7 +223,3 @@ class GameChecker:
 
 if __name__ == '__main__':
     Game().play()
-
-
-
-
