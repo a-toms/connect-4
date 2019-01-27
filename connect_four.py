@@ -21,12 +21,10 @@ class Game:
             self.show_draw_message()
 
     def get_players_names(self) -> None:
-        # name_1 = input("Please enter player 1's name:\t")
-        name_1 = "Alph"
+        name_1 = input("Please enter player 1's name:\t")
         self.add_player(name_1, "X")
         print(f"Thanks {name_1.title()}.")
-        # name_2 = input("Please enter player 2's name:\t")
-        name_2 = "Beta"
+        name_2 = input("Please enter player 2's name:\t")
         self.add_player(name_2, "O")
         print(f"Thanks {name_2.title()}.")
 
