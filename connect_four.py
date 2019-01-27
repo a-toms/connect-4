@@ -102,10 +102,12 @@ class Board:
     def show(self) -> None:
         right_divider = " |"
         space = " "
+        ten_spaces = space * 10
         board_title = "--~--   Connect Four    --~--"
         board_line = "-----------------------------"
         row_numbers = "| 1 | 2 | 3 | 4 | 5 | 6 | 7 |"
-        print(board_title + "\n")
+
+        print(ten_spaces + board_title + "\n")
         for i in range(6, -1, -1):  # The column height is 6. Countdown from 6.
             row = "|"
             for k in self.cols.keys():
@@ -113,9 +115,9 @@ class Board:
                     row += space + self.cols[k][i] + right_divider
                 except IndexError:
                     row += space + space + right_divider
-            print(row)
-        print(board_line)
-        print(row_numbers)
+            print(ten_spaces + row)
+        print(ten_spaces + board_line)
+        print(ten_spaces + row_numbers + "\n")
 
 
 class GameChecker:
