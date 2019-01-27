@@ -1,5 +1,6 @@
-from typing import Dict, Tuple, Sequence, List, NewType
-from itertools import cycle
+from typing import Dict, Tuple, Sequence, List
+import os
+import time
 
 
 class Game:
@@ -8,29 +9,37 @@ class Game:
         self.game_checker = GameChecker(self.board)
         self.players = []
 
-
     def play(self):
         print("Welcome to Connect 4!")
         self.get_players_names()
-        self.game_loop()
-
-
+        print("Let's play Connect 4!")
+        self.wait(3)
+        winning_player = self.run_loop_until_game_ends_and_get_winner()
+        winning_player.show_winner_message()
 
     def get_players_names(self) -> None:
         name_1 = input("Please enter player 1's name:\t")
         self.add_player(name_1, "X")
-        print("Thanks {name_1}.")
+        print(f"Thanks {name_1.title()}.")
         name_2 = input("Please enter player 2's name:\t")
         self.add_player(name_2, "O")
-        print("Thanks {name_2}.")
-
+        print(f"Thanks {name_2.title()}.")
 
     def add_player(self, player_name, player_token) -> None:
         self.players.append(Player(player_name, player_token))
 
-    def game_loop(self):
+    def wait(self, seconds):
+        while seconds > 0:
+            print(seconds)
+            time.sleep(1)
+            seconds -= 1
+
+    def run_loop_until_game_ends_and_get_winner(self):
+        self.board.clear_screen()
         while True:
             for active_player in self.players:
+                self.board.clear_screen()
+                self.board.show()
                 self.move(active_player)
                 if self.game_checker.is_game_complete():
                     return active_player
@@ -40,12 +49,13 @@ class Game:
         self.place_token(col, active_player)
 
     def place_token(self, column, player) -> None:
-        self.cols[column].append(self.player.token)
+        print(self.board.cols[column])
+        self.board.cols[column].append(player.token)
 
     def get_column(self, active_player) -> int:
         column = int(input(
             f"{active_player.name.title()}, "
-            f"please enter the column to place your piece."
+            f"please enter the column to place your piece.\t"
         ))
         if column not in (self.board.cols.keys()):
             "That column was not found. I will ask again."
@@ -53,6 +63,7 @@ class Game:
         if len(self.board.cols[column]) == 6:
             "That column is full. I will ask again"
             return self.move(active_player)
+        return column + 1
 
 
 class Player:
@@ -60,6 +71,8 @@ class Player:
         self.name = name
         self.token = token
 
+    def show_winner_message(self):
+        print(f"Congratulations! {self.name.title()} won the game!")
 
 class Board:
     def __init__(self):
@@ -73,16 +86,17 @@ class Board:
             6: []
         }
 
+    def clear_screen(self) -> None:
+        os.system('cls' if os.name == 'nt' else 'clear')
 
-
-    def show(self):
+    def show(self) -> None:
         right_divider = " |"
         space = " "
         board_title = "--~--   Connect Four    --~--"
         board_line = "-----------------------------"
         row_numbers = "| 1 | 2 | 3 | 4 | 5 | 6 | 7 |"
         print(board_title + "\n")
-        for i in range(6, 0, -1):  # The column height is 6. Countdown from 6.
+        for i in range(6, -1, -1):  # The column height is 6. Countdown from 6.
             row = "|"
             for k in self.cols.keys():
                 try:
@@ -182,6 +196,8 @@ class GameChecker:
         return False
 
 
+if __name__ == '__main__':
+    Game().play()
 
 
 

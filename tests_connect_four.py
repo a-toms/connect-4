@@ -1,5 +1,5 @@
 import unittest
-from connect_four import GameChecker, Board
+from connect_four import GameChecker, Board, Game
 
 
 class Examples:
@@ -84,6 +84,22 @@ class Examples:
             6: ["O", "O", "X", "O", "X", "X"]
         }
 
+
+class TestPlaceToken(unittest.TestCase):
+    def setUp(self):
+        self.game = Game()
+        self.game.add_player("Hzu", "X")
+
+    def test_place_token(self):
+        self.assertEqual(
+            [],
+            self.game.board.cols[0]
+        )
+        self.game.place_token(0, self.game.players[0])
+        self.assertEqual(
+            ["X"],
+            self.game.board.cols[0]
+        )
 
 class TestIsGameComplete(unittest.TestCase):
     def setUp(self):
