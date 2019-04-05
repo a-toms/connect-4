@@ -277,15 +277,4 @@ class TestContainsFourConsecutive(unittest.TestCase):
                 self.examples.vert_win_board.row_2
             )
         )
-
-    def test_is_vertical_win(self):
-        pass
-
-    def test_is_horizontal_win(self):
-        pass
-
-    def test_is_pos_diagonal_win(self):
-        pass
-
-    def test_is_neg_diagonal_win(self):
-        pass
+        
